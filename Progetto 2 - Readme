@@ -1,0 +1,106 @@
+# Progetto 2 – Gestione centro analisi mediche
+
+## Descrizione
+Questo progetto Python simula una gestione semplificata di un centro di analisi mediche.
+
+L’obiettivo dell’esercizio è applicare:
+- variabili e tipi di dati
+- programmazione a oggetti (OOP)
+- utilizzo della libreria NumPy per l’elaborazione numerica dei dati clinici
+
+Il programma gestisce pazienti, medici e analisi di laboratorio, calcolando anche statistiche sui risultati clinici.
+
+---
+
+## Funzionalità implementate
+
+### Parte 1 – Variabili e tipi di dati
+Sono state definite variabili per rappresentare:
+- nome
+- cognome
+- codice fiscale
+- età
+- peso
+- lista delle analisi effettuate
+
+Sono stati inseriti almeno 3 esempi iniziali di pazienti.
+
+### Parte 2 – Classi e OOP
+Sono state create le seguenti classi:
+
+#### Classe `Paziente`
+Attributi:
+- `nome`
+- `cognome`
+- `codice_fiscale`
+- `eta`
+- `peso`
+- `analisi_effettuate`
+- `risultati_analisi`
+
+Metodi:
+- `scheda_personale()` → restituisce i dati principali del paziente
+- `statistiche_analisi()` → calcola media, massimo, minimo e deviazione standard dei risultati
+
+#### Classe `Medico`
+Attributi:
+- `nome`
+- `cognome`
+- `specializzazione`
+
+Metodo:
+- `visita_paziente(paziente)` → mostra quale medico visita quale paziente
+
+#### Classe `Analisi`
+Attributi:
+- `tipo_analisi`
+- `risultati`
+
+Metodo:
+- `valuta()` → verifica se il valore dell’analisi rientra in un intervallo considerato normale
+
+### Parte 3 – Uso di NumPy
+È stato creato un array NumPy con i valori di un esame effettuato su 10 pazienti.
+
+Su questi valori vengono calcolati:
+- media
+- valore massimo
+- valore minimo
+- deviazione standard
+
+### Parte 4 – Integrazione OOP + NumPy
+Nella classe `Paziente`, l’attributo `risultati_analisi` viene memorizzato come array NumPy.
+
+Il metodo `statistiche_analisi()` utilizza NumPy per restituire:
+- media dei valori
+- massimo
+- minimo
+- deviazione standard
+
+### Parte 5 – Programma principale
+Nel blocco `main` vengono creati:
+- 3 medici
+- 5 pazienti
+
+Per ogni paziente il programma:
+- stampa la scheda personale
+- stampa le statistiche delle analisi
+- mostra il medico che lo visita
+
+---
+
+## Tecnologie utilizzate
+- Python
+- NumPy
+
+---
+
+## Requisiti
+Per eseguire il progetto è necessario avere installato:
+- Python 3
+- libreria NumPy
+
+Installazione di NumPy:
+
+```bash
+pip install numpy
