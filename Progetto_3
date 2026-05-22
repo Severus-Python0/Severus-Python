@@ -1,0 +1,208 @@
+# definisci variabili per rappresentare le seguenti informazioni di un cliente #
+
+nome = "Cesare"
+eta = 41
+saldo = 10000.00
+vip = True
+destinazioni = ["New York", "Niagara Falls", "Washington", "Philadelphia", "Boston"]
+prezzo_medio = {"New York" : 2500, "Niagara Falls" : 2000, "Washington" : 1000, "Philadelphia" : 1000, "Boston" : 700}
+
+
+# classe cliente #
+
+
+class Cliente:
+    def __init__(self, nome, eta, vip):
+        self.nome = nome
+        self.eta = eta
+        self.vip = vip
+    
+    def stampa_info(self):
+        print (f"Generalità cliente: {self.nome}, {self.eta}, {self.vip}")
+
+c1 = Cliente ("Cesare", 41, True)
+c1.stampa_info()
+
+# classe viaggio #
+
+class Viaggio:
+    def __init__(self, destinazione, prezzo, durata):
+        self.destinazione = destinazione
+        self.prezzo = prezzo
+        self.durata = durata
+
+    def stampa_info_viaggio(self):
+        print (f"Informazioni viaggio: destinazione {self.destinazione}, prezzo {self.prezzo}, durata: {self.durata}")
+
+
+v1 = Viaggio ("New York", 3200, 10)
+v1.stampa_info_viaggio()
+
+
+# classe prenotazioni #
+
+class Prenotazione:
+    def __init__(self, cliente, viaggio):
+        self.cliente = cliente
+        self.viaggio = viaggio
+
+    def calcola_importo_finale(self):
+        if self.cliente.vip is True:
+            sconto_effettuato = self.viaggio.prezzo * 10 / 100
+            prezzo_scontato = self.viaggio.prezzo - sconto_effettuato
+            return prezzo_scontato
+        else:
+            return self.viaggio.prezzo
+    
+    def dettagli(self):
+        print (f"Info prenotazione: {self.cliente.nome}, {self.cliente.eta}, {self.cliente.vip}, {self.viaggio.destinazione}, {self.viaggio.prezzo}, {self.viaggio.durata}, {self.calcola_importo_finale()} ")
+        
+p1 = Prenotazione(c1, v1)
+print (p1.calcola_importo_finale())
+p1.dettagli()
+
+# Numpy #
+
+import numpy as np
+
+prenotazioni_simulate = np.random.randint(200, 2001, size=100)
+prezzo_medio_numpy = prenotazioni_simulate.mean()
+prezzo_min = prenotazioni_simulate.min()
+prezzo_max = prenotazioni_simulate.max()
+
+print (f"Prezzo medio: {prezzo_medio_numpy} Prezzo minimo: {prezzo_min} Prezzo massimo: {prezzo_max}")
+deviazione_standard = prenotazioni_simulate.std()
+print("Deviazione standard:", deviazione_standard)
+
+prenotazione_sopra_media = prenotazioni_simulate > prezzo_medio_numpy
+numero_prenotazioni_sopra_media = prenotazione_sopra_media.sum()
+percentuale_sopra_media = numero_prenotazioni_sopra_media / len(prenotazioni_simulate) * 100
+print("Percentuale sopra la media:", percentuale_sopra_media)
+
+
+# Pandas #
+
+import pandas as pd
+
+dati_prenotazioni = {
+    "Cliente": ["Fulvio", "Mirko", "Omaro", "Amelia", "Luciano"],
+    "Destinazione": ["Kuala Lumpur", "Minneapolis", "Philadelphia", "Firenze", "Tokyo"],
+    "Prezzo": [2398, 2100, 1903, 200, 2800 ],
+    "Giorno_Partenza": ["15/03", "12/02", "01/01", "04/04", "09/05"],
+    "Durata": [15, 12, 10, 14, 3],
+    "Incasso": [3000, 2800, 2200, 350, 3800],
+    }
+
+df_prenotazioni = pd.DataFrame(dati_prenotazioni)
+print (f"Dati prenotazioni: {df_prenotazioni}")
+
+incasso_totale = df_prenotazioni["Incasso"].sum()
+print(f"Incasso totale: {incasso_totale}")
+
+incasso_medio = df_prenotazioni.groupby("Destinazione")["Incasso"].mean()
+print(f"Incasso medio: {incasso_medio}")
+
+top_3_destinazioni = df_prenotazioni["Destinazione"].value_counts().head(3)
+print (f"Le top 3 destinazioni sono: {top_3_destinazioni}")
+
+# Matplotlib - grafico a barre #
+
+import matplotlib.pyplot as plt
+
+plt.bar(
+    df_prenotazioni["Destinazione"],
+    df_prenotazioni["Incasso"]
+)
+plt.title("Incasso per destinazione")
+
+plt.show()
+
+
+
+# Matplotlib - grafico a linee #
+
+plt.plot(
+    df_prenotazioni["Giorno_Partenza"],
+    df_prenotazioni["Incasso"],
+)
+
+plt.title("Andamento giornaliero degli incassi")
+plt.show()
+
+
+# Matplotlib - grafico a torta #
+
+vendite_per_destinazione = df_prenotazioni["Destinazione"].value_counts()
+
+plt.pie(
+    vendite_per_destinazione,
+    labels=vendite_per_destinazione.index,
+    autopct="%1.1f%%"
+)
+
+plt.title("Percentuale vendite per destinazione")
+plt.show()
+
+
+# Parte 6 - Analisi avanzata #
+
+categorie_destinazioni = {
+    "Kuala Lumpur": "Asia",
+    "Minneapolis": "America",
+    "Philadelphia": "America",
+    "Firenze": "Europa",
+    "Tokyo": "Asia",
+}
+
+
+# incasso totale per categoria #
+
+df_prenotazioni["Categoria"] = df_prenotazioni["Destinazione"].map(categorie_destinazioni)
+print(f"Prenotazioni aggiornate: {df_prenotazioni}")
+
+incasso_categoria = df_prenotazioni.groupby("Categoria")["Incasso"].sum()
+print(incasso_categoria)
+
+
+# durata media viaggi per categoria #
+
+durata_viaggi_categoria = df_prenotazioni.groupby("Categoria")["Durata"].mean()
+print (f"La durata media dei viaggi per categoria è: {durata_viaggi_categoria}")
+
+
+# salvataggio csv #
+
+df_prenotazioni.to_csv("prenotazioni_analizzate.csv", index=False)
+print("CSV salvato correttamente")
+
+
+# Parte 7 - Estensioni #
+
+
+def top_clienti(n):
+    clienti_top = df_prenotazioni["Cliente"].value_counts().head(n)
+    return clienti_top
+
+print(top_clienti(3))
+
+
+# barre = incasso medio per categoria | linea = durata media per categoria #
+
+incasso_medio_categoria = df_prenotazioni.groupby("Categoria")["Incasso"].mean()
+durata_media_categoria = df_prenotazioni.groupby("Categoria")["Durata"].mean()
+
+print(incasso_medio_categoria)
+print(durata_media_categoria)
+
+plt.bar(
+    incasso_medio_categoria.index,
+    incasso_medio_categoria,
+)
+plt.title("Incasso medio e durata media per categoria")
+plt.plot(
+    durata_media_categoria.index,
+    durata_media_categoria,
+)
+
+plt.show()
+    
