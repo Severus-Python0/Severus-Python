@@ -1,0 +1,184 @@
+from pathlib import Path
+import pypandoc
+
+content = r"""
+# Progetto 3 — Sistema di Prenotazione Viaggi
+
+## Descrizione del Progetto
+
+Questo progetto simula un sistema di gestione per un’agenzia di viaggi online sviluppato in Python.
+
+L’obiettivo principale è integrare:
+
+- programmazione base,
+- programmazione ad oggetti (OOP),
+- analisi numerica con NumPy,
+- gestione dati con Pandas,
+- visualizzazione grafica con Matplotlib.
+
+Il progetto rappresenta un primo workflow completo di data analysis applicata a un contesto reale di prenotazioni viaggi.
+
+---
+
+# Funzionalità Implementate
+
+## Parte 1 — Variabili e Tipi di Dati
+
+- Gestione informazioni cliente:
+  - nome
+  - età
+  - saldo
+  - stato VIP
+- Lista destinazioni disponibili
+- Dizionario prezzi medi viaggio
+
+---
+
+## Parte 2 — Programmazione ad Oggetti (OOP)
+
+### Classe Cliente
+Gestisce:
+- nome cliente
+- età
+- stato VIP
+
+### Classe Viaggio
+Gestisce:
+- destinazione
+- prezzo
+- durata
+
+### Classe Prenotazione
+Collega cliente e viaggio:
+- calcolo importo finale
+- sconto VIP del 10%
+- stampa dettagli prenotazione
+
+---
+
+## Parte 3 — NumPy
+
+Simulazione di 100 prenotazioni casuali con:
+- prezzo medio
+- prezzo minimo
+- prezzo massimo
+- deviazione standard
+- percentuale prenotazioni sopra la media
+
+---
+
+## Parte 4 — Pandas
+
+Creazione DataFrame prenotazioni con:
+- Cliente
+- Destinazione
+- Prezzo
+- Giorno_Partenza
+- Durata
+- Incasso
+
+Analisi effettuate:
+- incasso totale
+- incasso medio per destinazione
+- top 3 destinazioni più vendute
+
+---
+
+## Parte 5 — Matplotlib
+
+Visualizzazione dati tramite:
+- grafico a barre
+- grafico a linee
+- grafico a torta
+
+---
+
+## Parte 6 — Analisi Avanzata
+
+Introduzione categorie geografiche:
+- Europa
+- Asia
+- America
+- Africa
+
+Analisi:
+- incasso totale per categoria
+- durata media viaggi per categoria
+
+Esportazione finale:
+- prenotazioni_analizzate.csv
+
+---
+
+## Parte 7 — Estensioni
+
+### Funzione top_clienti(n)
+Restituisce i clienti con più prenotazioni.
+
+### Grafico combinato
+Visualizza:
+- barre → incasso medio per categoria
+- linea → durata media per categoria
+
+---
+
+# Tecnologie Utilizzate
+
+- Python 3
+- NumPy
+- Pandas
+- Matplotlib
+
+---
+
+# Struttura del Progetto
+
+progetto3/
+│
+├── progetto3.py
+├── prenotazioni_analizzate.csv
+└── README.txt
+
+---
+
+# Obiettivi Didattici
+
+Questo progetto è stato sviluppato per:
+- consolidare le basi Python,
+- applicare OOP a uno scenario reale,
+- introdurre la data analysis,
+- imparare la visualizzazione dati,
+- sviluppare logica progettuale completa.
+
+---
+
+# Possibili Estensioni Future
+
+- database SQLite/MySQL
+- interfaccia grafica
+- autenticazione utenti
+- esportazione PDF report
+- dashboard interattive
+- API Flask/FastAPI
+- integrazione machine learning
+
+---
+
+# Autore
+
+Cesare D’Agostino
+
+Progetto sviluppato durante il percorso di studio Python, AI & Machine Learning.
+"""
+
+output_path = "/mnt/data/README_progetto3.txt"
+
+pypandoc.convert_text(
+    content,
+    'plain',
+    format='md',
+    outputfile=output_path,
+    extra_args=['--standalone']
+)
+
+print(f"File creato: {output_path}")
