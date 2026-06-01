@@ -1,0 +1,172 @@
+# Parte 1 – Dataset di base #
+
+import pandas as pd
+
+dati = {
+    "Data" : ["1984-03-12", "1991-07-25", "2002-01-19", "1978-11-08", "2000-04-21",
+    "1995-09-04", "1989-06-30", "1973-12-14", "1999-02-27", "1981-05-03",
+    "1993-10-16", "1976-01-22", "2004-07-07", "1987-11-11", "1990-03-29",
+    "1998-12-05", "1971-06-18", "1985-09-24", "2001-02-13", "1996-08-01",
+    "1980-05-20", "1979-04-06", "1992-10-28", "2003-01-15", "1986-07-10",
+    "1975-11-23", "1997-03-17", "1983-06-02", "1994-12-26", "1968-08-09"],
+
+    "Negozio" : ["Palermo", "Torino", "Carini", "Milano", "Roma",
+    "Napoli", "Firenze", "Bologna", "Genova", "Catania",
+    "Bari", "Verona", "Padova", "Venezia", "Trieste",
+    "Parma", "Pisa", "Lecce", "Perugia", "Ancona",
+    "Cagliari", "Messina", "Salerno", "Rimini", "Modena",
+    "Bergamo", "Brescia", "Taranto", "Siracusa", "Livorno"],
+
+    "Prodotto" : ["Computer", "Laptop", "Nintendo Switch", "Tablet", "Tv",
+    "Smartphone", "Mouse", "Tastiera", "Monitor", "Stampante",
+    "Cuffie", "Webcam", "Hard Disk", "SSD", "Router",
+    "Speaker", "Smartwatch", "Console", "Joystick", "Microfono",
+    "Caricatore", "Power Bank", "Cover", "Scheda Video", "RAM",
+    "Processore", "Scheda Madre", "Proiettore", "Fotocamera", "Drone"],
+
+    "Quantità" : [10, 15, 20, 35, 50,
+    8, 12, 25, 30, 45,
+    18, 22, 40, 55, 60,
+    5, 7, 9, 14, 16,
+    28, 32, 38, 42, 48,
+    3, 6, 11, 24, 70],
+
+    "Prezzo_unitario" : [ 800.00, 550.00, 300.00, 250.00, 1000.00,
+    699.99, 25.50, 45.90, 180.75, 120.00,
+    75.99, 65.50, 90.00, 110.49, 85.90,
+    130.00, 199.99, 499.90, 55.00, 95.75,
+    20.99, 35.50, 15.90, 420.00, 80.00,
+    260.99, 150.50, 350.75, 600.00, 750.90]
+
+
+}
+
+# creazione del file .CSV #
+
+df = pd.DataFrame(dati)
+df.to_csv("vendite.csv", index=False)
+print("Dataset creato correttamente")
+
+
+
+# Parte 2 – Importazione con Pandas #
+
+df_importato = pd.read_csv("vendite.csv")
+print(df_importato.head(5))
+print(df_importato.shape)
+df_importato.info()
+
+# Parte 3 - Elaborazioni con Pandas #
+
+df_importato["Incasso"] = df_importato["Quantità"] * df_importato["Prezzo_unitario"]
+print(df_importato["Incasso"].head(3))
+
+Incasso_totale = df_importato["Incasso"].sum()
+print(f"Incasso totale = {Incasso_totale}")
+
+Incasso_medio = df_importato.groupby("Negozio")["Incasso"].mean()
+print(f"Incasso medio = {Incasso_medio}")
+
+Raggruppamento_prodotto = df_importato.groupby("Prodotto")["Quantità"].sum().sort_values(ascending=False).head(3)
+print(f"Raggruppamento per prodotto = {Raggruppamento_prodotto}")
+
+Raggr_negozio_e_prodotto = df_importato.groupby(["Negozio", "Prodotto"])["Incasso"].mean()
+print(f"Raggruppamento per Negozio e Prodotto = {Raggr_negozio_e_prodotto}")
+
+
+
+# Parte 4 - Uso di NumPy #
+
+import numpy as np
+
+quantità_array = df_importato["Quantità"].to_numpy()
+print(f"Quantità in Array = {quantità_array}")
+
+
+# Parte 4.1 - Media, min, max, dev standard
+quantità_media = np.mean(quantità_array)
+print(f"Quantità media = {quantità_media}")
+
+quantità_minima = np.min(quantità_array)
+print(f"Quantità minima = {quantità_minima}")
+
+quantità_massima = np.max(quantità_array)
+print(f"Quantità massima = {quantità_massima}")
+
+deviazione_standard = np.std(quantità_array)
+print(f"Deviazione standard = {deviazione_standard}")
+
+# Parte 4.2 - Quantità sopra la media #
+
+quantità_sopra_media = quantità_array > quantità_media
+num_quantità_sopra_media = quantità_sopra_media.sum()
+
+# Parte 4.3 - Percentuale sopra la media #
+
+percentuale_sopra_media = num_quantità_sopra_media / len(quantità_array) * 100
+print(f"Percentuale sopra la media = {percentuale_sopra_media}")
+
+# Parte 4.4 - Quantità prezzo unitario #
+
+quantità_prezzo_unitario_array = df_importato[["Quantità", "Prezzo_unitario"]].to_numpy()
+print(f"Quantità e prezzo unitario in Array = {quantità_prezzo_unitario_array}")
+
+
+# 4.5 — calcolare l’incasso con NumPy e confrontarlo con la colonna Incasso #
+
+quantità_numpy = quantità_prezzo_unitario_array[:, 0]
+prezzo_numpy = quantità_prezzo_unitario_array[:, 1]
+
+incasso_numpy = quantità_numpy * prezzo_numpy
+print(f"Incasso numpy = {incasso_numpy}")
+
+confronto_risultati_numpy_pandas = np.allclose(incasso_numpy, df_importato["Incasso"])
+print(f"Confronto risultati numpy & pandas = {confronto_risultati_numpy_pandas}")
+
+
+# 5.0 - Visualizzazioni con Matplotlib #
+
+import matplotlib.pyplot as plt
+
+# 5.1 - Grafico a barre #
+
+incasso_per_negozio = df_importato.groupby("Negozio")["Incasso"].sum().plot(kind="bar")
+plt.show()
+
+
+# 5.2 - Grafico a torta #
+
+incasso_per_prodotto = df_importato.groupby("Prodotto")["Incasso"].sum().plot(kind="pie")
+plt.show()
+
+# 5.3 - Grafico a linee #
+
+incasso_per_data = df_importato.groupby("Data")["Incasso"].sum().plot(kind="line")
+plt.show()
+
+# 6.0 - Analisi avanzata, nuova categoria, incasso totale per categoria, quantità media venduta #
+
+def assegna_categoria(prodotto):
+    if prodotto in ["Laptop","Scheda Video", "RAM",
+    "Processore", "Scheda Madre", "Computer", "Tablet", "SSD", "Hard Disk"]:
+        return "Informatica"
+    elif prodotto in ["Mouse", "Webcam", "Tastiera", "Speaker", "Monitor", "Microfono", 
+    "Caricatore", "Power Bank"]:
+        return "Accessori"
+    else: 
+        return "Altro"
+
+df_importato["Categoria"] = df_importato["Prodotto"].apply(assegna_categoria)
+print(df_importato[["Prodotto", "Categoria"]].head())
+
+incasso_tot_categoria = df_importato.groupby("Categoria")["Incasso"].sum()
+print(incasso_tot_categoria)
+
+quantita_media_venduta = df_importato.groupby("Categoria")["Quantità"].mean()
+print(quantita_media_venduta)
+
+# Salvataggio file finale #
+
+df_importato.to_csv("vendite_analizzate.csv", index=False)
+
+print("File vendite_analizzate.csv salvato correttamente")
